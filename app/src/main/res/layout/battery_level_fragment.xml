@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" alias="v"/>
+
+        <variable
+            name="viewmodel"
+            type="com.example.batterylowmessenger.viewModels.BatteryLevelFragmentViewModel" />
+
+        <variable
+            name="batteryLevelFragment"
+            type="com.example.batterylowmessenger.view.BatteryLevelFragment" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewContainer"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/linearlayout_bg"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/editLevel_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_message_edit_text"
+                android:onTextChanged = "@{viewmodel.onTextChanged}"
+                android:imeOptions="actionDone"
+                android:maxLength="2"
+                android:inputType="number"
+                android:text="@{viewmodel.emptyText}"
+                android:ems="10"
+                android:hint="@string/enter_the_charge_level" >
+
+                <requestFocus />
+            </EditText>
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{batteryLevelFragment::backToHomeFragment}"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_gplus_gb"
+                    android:textColor="@color/white"
+                    android:text="@string/cancel" />
+
+
+
+                <Button
+                    android:id="@+id/button_save_charge"
+                    android:layout_width="0dp"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewmodel.enableSaveButton ? v.VISIBLE : v.GONE}"
+                    android:onClick="@{batteryLevelFragment::backToHomeFragment}"
+                    android:background="@drawable/button_fb_gb"
+                    android:text="@string/save" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</layout>

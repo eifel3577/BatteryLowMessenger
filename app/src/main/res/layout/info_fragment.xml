@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="infoFragment"
+            type="com.example.batterylowmessenger.view.InfoFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.batterylowmessenger.viewModels.InfoFragmentViewModel"/>
+
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/linearlayout_bg"
+            android:padding="5dp"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/textViewSelectContacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                style="@style/InfoText"
+                android:background="@drawable/custom_message_edit_text"
+                android:layout_weight="1"
+                android:maxLines="7"
+                android:scrollbars = "vertical"
+                android:layout_margin="10dp"
+                android:text="@{viewmodel.checkedContactString}" />
+
+
+            <TextView
+                android:id="@+id/textViewSelectMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                style="@style/InfoText"
+                android:scrollbars = "vertical"
+                android:background="@drawable/custom_message_edit_text"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:text="@{viewmodel.messageText}" />
+
+
+            <TextView
+                android:id="@+id/textViewSelectChargeLevel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:scrollbars = "vertical"
+                style="@style/InfoText"
+                android:layout_weight="1"
+                android:background="@drawable/custom_message_edit_text"
+                android:layout_margin="10dp"
+                android:text="@{viewmodel.batteryLevelText}" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="contactFragment"
+            type="com.example.batterylowmessenger.view.ContactFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.batterylowmessenger.viewModels.ContactFragmentViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/tasksContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="@{viewmodel.loadContactList ? View.GONE : View.VISIBLE}"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/contacts_list"
+                android:layout_weight="1"
+                app:items="@{viewmodel.items}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <Button
+                android:id="@+id/button_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                style="@style/ButtonText"
+                android:enabled="@{viewmodel.isCheckedContact ? false : true}"
+                android:onClick="@{contactFragment::backToHomeFragment}"
+                android:background="@drawable/button_fb_gb"
+                android:layout_margin="10dp"
+                android:text="@string/text_for_button_confirm" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/white"
+            android:visibility="@{viewmodel.loadContactList ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical">
+
+            <com.comix.overwatch.HiveProgressView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
+                app:hive_animDuration="5000"
+                app:hive_color="@color/colorAccent"
+                app:hive_maxAlpha="255"
+                app:hive_rainbow="true"
+                app:hive_cornerRadius="20"
+                app:hive_shrink="true" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>
