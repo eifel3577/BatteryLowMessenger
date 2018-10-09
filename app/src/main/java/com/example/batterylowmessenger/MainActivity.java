@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setDrawerLayout();
@@ -57,13 +57,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         contactDao = database.contactDao();
     }
 
-    /**вызывается при нажатиях аппаратной кнопки Назад во фрагментах */
+
     @Override
     public void onBackPressed() {
         tellFragments();
     }
 
-    /**обработка нажатий аппаратной кнопки Назад во фрагментах */
+
     private void tellFragments(){
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for(Fragment f : fragments){
@@ -94,8 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /**наблюдение за источниками событий навигации.События кладут во InteractionViewModel
-     * фрагменты */
+
     private void observeInteractionViewModel(final InteractionViewModel model){
         model.getSelected().observe(this, new Observer<String>() {
             @Override
@@ -109,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     if (message.equals("openMessageFragment")) {
                         openFragment(MessageFragment.newInstance());
+                    }
+                    if (message.equals("openBatteryLevelFragment")){
+                        openFragment(BatteryLevelFragment.newInstance());
                     }
                     if (message.equals("openInfoFragment")) {
                         openFragment(InfoFragment.newInstance());
@@ -205,6 +207,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void updateScreen(){
         Intent intent= new Intent(MainActivity.this,MainActivity.class);
         finish();
-        startActivity(getIntent());
+        startActivity(intent);
     }
 }

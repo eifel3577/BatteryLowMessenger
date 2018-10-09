@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         return PendingIntent.getBroadcast(context, REQUEST_CODE, new Intent(context, AlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    //приемник слушатель
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
 

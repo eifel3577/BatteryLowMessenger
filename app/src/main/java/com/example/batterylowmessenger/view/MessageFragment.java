@@ -2,6 +2,7 @@ package com.example.batterylowmessenger.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.MainActivity;
 import com.example.batterylowmessenger.databinding.MessageFragmentBinding;
 import com.example.batterylowmessenger.services.ApplicationService;
@@ -18,14 +20,21 @@ import com.example.batterylowmessenger.sharedPreferenceStorage.ApplicationShared
 import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 import com.example.batterylowmessenger.viewModels.MessageFragmentViewModel;
 
+import javax.inject.Inject;
+
 public class MessageFragment extends Fragment {
+
+    @Inject
+    Context context;
 
     private InteractionViewModel interactionViewModel;
     private MessageFragmentViewModel messageFragmentViewModel;
     private MessageFragmentBinding messageFragmentBinding;
     private boolean contactsIsChecked;
+    private boolean handleOnPauseMethod=false;
 
     public MessageFragment() {
+        App.getAppComponent().inject(this);
     }
 
     public static MessageFragment newInstance(){
@@ -53,7 +62,7 @@ public class MessageFragment extends Fragment {
         viewModel.getTextMessage().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                ApplicationSharedPreference.setStoredMessage(getContext(),s);
+                ApplicationSharedPreference.setStoredMessage(context,s);
 
             }
         });
@@ -73,20 +82,27 @@ public class MessageFragment extends Fragment {
     }
 
     public void backToHomeFragment(View view){
-        interactionViewModel.select("openHomeFragment");
+        handleOnPauseMethod = true;
+        prepareToStartService();
+        onPause();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        prepareToStartService();
+        if(!handleOnPauseMethod){
+            interactionViewModel.select("openMessageFragment");
+        }
+        if(handleOnPauseMethod){
+            interactionViewModel.select("openHomeFragment");
+        }
     }
 
     public void prepareToStartService(){
-        if(contactsIsChecked&&ApplicationSharedPreference.getStoredMessage(getContext())!=null&&
-                ApplicationSharedPreference.getStoredMessage(getContext()).length()>0) {
+        if(contactsIsChecked&&ApplicationSharedPreference.getStoredMessage(context)!=null&&
+                ApplicationSharedPreference.getStoredMessage(context).length()>0) {
 
-            Intent intent = new Intent(getContext(), ApplicationService.class);
+            Intent intent = new Intent(context, ApplicationService.class);
             intent.putExtra(ApplicationService.HANDLE_REBOOT, true);
             getActivity().startService(intent);
         }

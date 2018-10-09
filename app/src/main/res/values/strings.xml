@@ -48,6 +48,12 @@
     <string name="license_author_fab">Version 2.1</string>
     <string name="license_content_fab">Developed by Maxim Turkin</string>
     <string name="year_fab">2018</string>
+    <string name="enter_correct_value">Введите корректное значение</string>
+    <string name="selected_contacts">Выбранные контакты: </string>
+    <string name="selected_message">Выбранное сообщение: </string>
+    <string name="selected_batterylevel">Уровень заряда: </string>
+    <string name="default_batterylevel">3</string>
+    <string name="percent_symbol"> %</string>
     <string-array name="b">
 
     </string-array>

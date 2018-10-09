@@ -29,14 +29,9 @@ public class ApplicationService extends Service {
     @Inject
     ContactsRepository contactsRepository;
 
-
     private static final String TAG = "YourService";
     public static final String BATTERY_UPDATE = "battery_update";
     public static final String HANDLE_REBOOT = "first_start";
-
-
-
-
 
     public void onCreate() {
         App.getAppComponent().inject(this);
@@ -47,8 +42,6 @@ public class ApplicationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
 
         if (intent != null && intent.hasExtra(BootReceiver.ACTION_BOOT)){
 
@@ -130,12 +123,15 @@ public class ApplicationService extends Service {
 
             contactsRepository.getCheckedContactList(new LoadData.LoadContactCallback() {
                 @Override
-                public void onContactsLoaded(List<Contact> tasks) {
+                public void onContactsLoaded(List<Contact> contacts) {
                     List<String>list = new ArrayList<>();
-                    for(Contact contact:tasks){
-                        list.add(contact.getContactNumber());
+                    if(contacts.size()>0) {
+                        for (Contact contact : contacts) {
+                            list.add(contact.getContactNumber());
+                        }
+                        sendMessageToContacts(list, context);
                     }
-                    sendMessageToContacts(list,context);
+
                 }
 
                 @Override
@@ -147,6 +143,7 @@ public class ApplicationService extends Service {
         public void sendMessageToContacts(List<String> list,Context context) {
             String message = ApplicationSharedPreference.getStoredMessage(context);
             for(String number:list){
+                Log.d(TAG,message+" "+number);
                 sendSMSMessage(number, message);
             }
         }
@@ -156,6 +153,5 @@ public class ApplicationService extends Service {
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(contact, null, message, null, null);
         }
-
     }
 }
