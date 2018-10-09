@@ -91,8 +91,7 @@ public class ContactFragment extends Fragment implements OnBackPressed {
     }
 
     private ContactFragmentViewModel setupViewModel(){
-        return ViewModelProviders.of(this, new ModelFactory(editOrChangeContacts,
-                getActivity().getApplication()))
+        return ViewModelProviders.of(this, new ModelFactory(editOrChangeContacts))
                 .get(ContactFragmentViewModel.class);
     }
 

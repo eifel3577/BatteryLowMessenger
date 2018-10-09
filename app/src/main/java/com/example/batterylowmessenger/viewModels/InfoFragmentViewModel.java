@@ -2,10 +2,12 @@ package com.example.batterylowmessenger.viewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.LoadData;
 import com.example.batterylowmessenger.data.Contact;
 import com.example.batterylowmessenger.repository.ContactsRepository;
@@ -14,19 +16,23 @@ import com.example.batterylowmessenger.sharedPreferenceStorage.ApplicationShared
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 
-public class InfoFragmentViewModel extends AndroidViewModel {
 
-    private Context context;
-    private ContactsRepository repository;
+public class InfoFragmentViewModel extends ViewModel {
+
+    @Inject
+    Context context;
+    @Inject
+    ContactsRepository repository;
+
+
     public ObservableField<String> checkedContactString = new ObservableField<>();
     public ObservableField<String>messageText = new ObservableField<>();
     public ObservableField<String>batteryLevelText = new ObservableField<>();
 
-    public InfoFragmentViewModel(@NonNull Application application) {
-        super(application);
-        this.repository = new ContactsRepository(this.getApplication());
-        this.context = getApplication();
+    public InfoFragmentViewModel() {
+        App.getAppComponent().inject(this);
     }
 
     public void start(){

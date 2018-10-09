@@ -10,10 +10,9 @@ import com.example.batterylowmessenger.viewModels.ContactFragmentViewModel;
 public class ModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final boolean id;
-    private Application mApplication;
 
-    public ModelFactory(boolean id,Application application) {
-        mApplication = application;
+
+    public ModelFactory(boolean id) {
         this.id = id;
     }
 
@@ -21,7 +20,7 @@ public class ModelFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass == ContactFragmentViewModel.class) {
-            return (T) new ContactFragmentViewModel(id,mApplication);
+            return (T) new ContactFragmentViewModel(id);
         }
         return null;
     }

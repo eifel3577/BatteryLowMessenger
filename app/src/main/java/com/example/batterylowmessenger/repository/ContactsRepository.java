@@ -18,19 +18,22 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class ContactsRepository {
 
+    @Inject
     Executor executor;
-
+    @Inject
+    Context context;
     private MyDatabase database;
     private ContactDao contactDao;
-    private Context context;
 
 
-    public ContactsRepository(Context context) {
-        this.context = context;
-        executor = Executors.newSingleThreadExecutor();
+    @Inject
+    public ContactsRepository() {
+        App.getAppComponent().inject(this);
         database = App.getInstance().getDatabase();
         contactDao = database.contactDao();
     }

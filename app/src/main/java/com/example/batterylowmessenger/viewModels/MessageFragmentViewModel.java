@@ -9,19 +9,23 @@ import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.CheckedContact;
 import com.example.batterylowmessenger.repository.ContactsRepository;
 
-public class MessageFragmentViewModel extends AndroidViewModel {
+import javax.inject.Inject;
+
+public class MessageFragmentViewModel extends ViewModel {
+
+    @Inject
+    ContactsRepository contactsRepository;
 
     public final ObservableBoolean madeSaveButtonEnabled = new ObservableBoolean(false);
     MutableLiveData<String>textMessage =new MutableLiveData<>();
-    private ContactsRepository contactsRepository;
     private MutableLiveData<Boolean>isContactChecked = new MutableLiveData<>();
 
-    public MessageFragmentViewModel(@NonNull Application application) {
-        super(application);
-        contactsRepository = new ContactsRepository(this.getApplication());
+    public MessageFragmentViewModel() {
+        App.getAppComponent().inject(this);
     }
 
     public MutableLiveData<String> getTextMessage(){

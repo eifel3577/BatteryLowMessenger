@@ -8,21 +8,23 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.CheckedContact;
 import com.example.batterylowmessenger.repository.ContactsRepository;
 
-public class HomeFragmentViewModel extends AndroidViewModel {
+import javax.inject.Inject;
 
-    private ContactsRepository repository;
-    MutableLiveData<Boolean> isContactChecked = new MutableLiveData<>();
-    //public final ObservableBoolean visibleContacts = new ObservableBoolean(false);
-    //public final ObservableBoolean visibleTextSms = new ObservableBoolean(true);
+public class HomeFragmentViewModel extends ViewModel {
 
+    @Inject
+    ContactsRepository repository;
 
-    public HomeFragmentViewModel(@NonNull Application application) {
-        super(application);
-        repository = new ContactsRepository(this.getApplication());
+    public HomeFragmentViewModel() {
+        App.getAppComponent().inject(this);
     }
+
+    MutableLiveData<Boolean> isContactChecked = new MutableLiveData<>();
+
 
     public LiveData<Boolean> getIsContactChecked(){
         return isContactChecked;

@@ -9,22 +9,28 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.CheckedContact;
 import com.example.batterylowmessenger.repository.ContactsRepository;
 
-public class BatteryLevelFragmentViewModel extends AndroidViewModel {
+import javax.inject.Inject;
+
+public class BatteryLevelFragmentViewModel extends ViewModel {
+
+    @Inject
+    ContactsRepository contactsRepository;
 
     private MutableLiveData<String> batteryLevel =new MutableLiveData<>();
     private MutableLiveData<Boolean>isDataCorrect = new MutableLiveData<>();
     public final ObservableBoolean enableSaveButton = new ObservableBoolean(false);
     public final ObservableField<String> emptyText = new ObservableField<>();
-    private ContactsRepository contactsRepository;
     private MutableLiveData<Boolean>isContactChecked = new MutableLiveData<>();
 
-    public BatteryLevelFragmentViewModel(@NonNull Application application) {
-        super(application);
-        contactsRepository = new ContactsRepository(this.getApplication());
+    public BatteryLevelFragmentViewModel() {
+        App.getAppComponent().inject(this);
     }
+
+
 
     public MutableLiveData<String> getBatteryLevel(){
         return batteryLevel;

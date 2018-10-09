@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.IBinder;
 import android.telephony.SmsManager;
+import android.util.Log;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.LoadData;
 import com.example.batterylowmessenger.data.Contact;
 import com.example.batterylowmessenger.receivers.AlarmReceiver;
@@ -19,18 +21,25 @@ import com.example.batterylowmessenger.sharedPreferenceStorage.ApplicationShared
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 
 
 public class ApplicationService extends Service {
+
+    @Inject
+    ContactsRepository contactsRepository;
+
+
     private static final String TAG = "YourService";
     public static final String BATTERY_UPDATE = "battery_update";
     public static final String HANDLE_REBOOT = "first_start";
-    ContactsRepository contactsRepository = new ContactsRepository(getApplicationContext());
+
 
 
 
 
     public void onCreate() {
+        App.getAppComponent().inject(this);
         super.onCreate();
 
     }
