@@ -2,15 +2,18 @@ package com.example.batterylowmessenger.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.MainActivity;
 import com.example.batterylowmessenger.ModelFactory;
 import com.example.batterylowmessenger.OnBackPressed;
@@ -24,9 +27,14 @@ import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import static java.security.AccessController.getContext;
 
 public class ContactFragment extends Fragment implements OnBackPressed {
+
+    @Inject
+    Context context;
 
     private static final String EDIT_OR_CHANGE_IDENT = "editOrChangeIdent";
 
@@ -36,8 +44,11 @@ public class ContactFragment extends Fragment implements OnBackPressed {
     private ContactsAdapter adapter;
     private boolean editOrChangeContacts;
     private boolean contactsIsChecked;
+    private boolean handleOnPauseMethod=false;
 
-    public ContactFragment() {}
+    public ContactFragment() {
+        App.getAppComponent().inject(this);
+    }
 
     public static ContactFragment newInstance(boolean value){
         Bundle args = new Bundle();
@@ -114,25 +125,34 @@ public class ContactFragment extends Fragment implements OnBackPressed {
 
     @Override
     public void onBackPressed() {
-        interactionViewModel.select("openHomeFragment");
+        handleOnPauseMethod= true;
+        prepareToStartService();
+        onPause();
     }
 
     public void backToHomeFragment(View view){
-        interactionViewModel.select("openHomeFragment");
+        handleOnPauseMethod = true;
+        prepareToStartService();
+        onPause();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        prepareToStartService();
+        if(!handleOnPauseMethod){
+            interactionViewModel.select("openContactList");
+        }
+        if(handleOnPauseMethod){
+            interactionViewModel.select("openHomeFragment");
+        }
     }
 
     public void prepareToStartService(){
 
-        if(contactsIsChecked&& ApplicationSharedPreference.getStoredMessage(getContext())!=null&&
-                ApplicationSharedPreference.getStoredMessage(getContext()).length()>0) {
+        if(contactsIsChecked&& ApplicationSharedPreference.getStoredMessage(context)!=null&&
+                ApplicationSharedPreference.getStoredMessage(context).length()>0) {
 
-            Intent intent = new Intent(getContext(), ApplicationService.class);
+            Intent intent = new Intent(context, ApplicationService.class);
             intent.putExtra(ApplicationService.HANDLE_REBOOT, true);
             getActivity().startService(intent);
         }

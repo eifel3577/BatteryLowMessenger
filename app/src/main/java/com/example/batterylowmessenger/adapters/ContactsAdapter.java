@@ -28,7 +28,6 @@ public class ContactsAdapter extends BaseAdapter {
                            ContactFragmentViewModel contactsViewModel) {
         this.contactsViewModel = contactsViewModel;
         setList(contacts);
-
     }
 
     public void replaceData(List<Contact> contacts) {
@@ -57,15 +56,12 @@ public class ContactsAdapter extends BaseAdapter {
 
         ContactItemBinding binding;
         if (view == null) {
-            // Inflate
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
-            // Create the binding
             binding = ContactItemBinding.inflate(inflater, viewGroup, false);
+        }
+        else {
 
-
-        } else {
-            // Recycling view
             binding = DataBindingUtil.getBinding(view);
         }
 
@@ -76,7 +72,7 @@ public class ContactsAdapter extends BaseAdapter {
                 boolean checked = ((CheckBox)v).isChecked();
 
                 contactsViewModel.contactChecked(contact,checked);
-                //contactsViewModel.completeTask(contact, checked);
+
             }
         };
 

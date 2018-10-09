@@ -2,6 +2,7 @@ package com.example.batterylowmessenger.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,22 +12,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.MainActivity;
 import com.example.batterylowmessenger.OnBackPressed;
+import com.example.batterylowmessenger.R;
 import com.example.batterylowmessenger.databinding.BatteryLevelFragmentBinding;
 import com.example.batterylowmessenger.services.ApplicationService;
 import com.example.batterylowmessenger.sharedPreferenceStorage.ApplicationSharedPreference;
 import com.example.batterylowmessenger.viewModels.BatteryLevelFragmentViewModel;
 import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 
+import javax.inject.Inject;
+
 public class BatteryLevelFragment extends Fragment implements OnBackPressed {
+
+    @Inject
+    Context context;
 
     private InteractionViewModel interactionViewModel;
     private BatteryLevelFragmentBinding binding;
     private BatteryLevelFragmentViewModel viewModel;
     private boolean contactsIsChecked;
+    private boolean handleOnPauseMethod=false;
 
-    public BatteryLevelFragment() {}
+
+    public BatteryLevelFragment() {
+        App.getAppComponent().inject(this);
+    }
 
     public static BatteryLevelFragment newInstance(){
         return new BatteryLevelFragment();
@@ -58,8 +70,7 @@ public class BatteryLevelFragment extends Fragment implements OnBackPressed {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (aBoolean != null) {
-                    if (!aBoolean) Toast.makeText(getContext(), "Введите корректное " +
-                            "значение", Toast.LENGTH_SHORT).show();
+                    if (!aBoolean) Toast.makeText(context,context.getResources().getString(R.string.enter_correct_value), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -86,26 +97,35 @@ public class BatteryLevelFragment extends Fragment implements OnBackPressed {
     }
 
     public void backToHomeFragment(View view){
-        interactionViewModel.select("openHomeFragment");
+        handleOnPauseMethod= true;
+        prepareToStartService();
+        onPause();
     }
 
     @Override
     public void onBackPressed() {
-        interactionViewModel.select("openHomeFragment");
+        handleOnPauseMethod= true;
+        prepareToStartService();
+        onPause();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        prepareToStartService();
+        if(!handleOnPauseMethod){
+            interactionViewModel.select("openBatteryLevelFragment");
+        }
+        if(handleOnPauseMethod){
+            interactionViewModel.select("openHomeFragment");
+        }
     }
 
-    public void prepareToStartService(){
-        Toast.makeText(getContext(),"Сервис запущен",Toast.LENGTH_SHORT).show();
-        if(contactsIsChecked&&ApplicationSharedPreference.getStoredMessage(getContext())!=null&&
-                ApplicationSharedPreference.getStoredMessage(getContext()).length()>0) {
 
-            Intent intent = new Intent(getContext(), ApplicationService.class);
+    public void prepareToStartService(){
+        if(contactsIsChecked&&ApplicationSharedPreference.getStoredMessage(context)!=null&&
+                ApplicationSharedPreference.getStoredMessage(context).length()>0) {
+
+            Intent intent = new Intent(context, ApplicationService.class);
             intent.putExtra(ApplicationService.HANDLE_REBOOT, true);
             getActivity().startService(intent);
         }

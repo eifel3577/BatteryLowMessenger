@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="b"/>
+    <string name="about_version">About version</string>
+    <string name="additionally">Addition</string>
+    <string name="app_description">Thanks for downloading application! This would help to let your friends to know that you gonna
+        be unavailable soon, as you your phone is out of charge.Its so simple - when your phone battery running low it will send the text
+        automatically.By choosing Contacts you can choose the phone numbers who would receive this message.By pressing Texts you can establish
+        text of the message.To change the list of delivery address or to change content of the message use the function Edit.Besides
+        you can choose at which level of battery charge the message will be send by choosing function to adjust battery level which
+        you can find on side menu.If you dont choose the battery level the message would be send automatically when you phones battery is at 3 percent.
+        </string>
+    <string name="app_name">BatteryLowMessenger</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_text_for_sms">Select text for SMS</string>
+    <string name="cont_description">cont_description</string>
+    <string name="content_desc">header image for navigation panel</string>
+    <string name="default_batterylevel">3</string>
+    <string name="dialog_title_licenses">About version</string>
+    <string name="edit_contacts">Edit contacts</string>
+    <string name="edit_data">Edit data</string>
+    <string name="edit_messages">Edit message</string>
+    <string name="enter_correct_value">Enter valid value</string>
+    <string name="enter_the_charge_level">Select battery level</string>
+    <string name="enter_your_message">Enter message text</string>
+    <string name="enter_your_message_text">Enter message text</string>
+    <string name="home">To Home page</string>
+    <string name="imok">BatteryLowMessenger</string>
+    <string name="license_author_fab">Version 2.1</string>
+    <string name="license_content_fab">Developed by Maxim Turkin</string>
+    <string name="license_title_fab">Maxim Turkin</string>
+    <string name="mail">maximturkin50@gmail.com</string>
+    <string name="message_text_intro">Enter text.Selected contacts will receive it</string>
+    <string name="name">Name</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="percent_symbol"> %</string>
+    <string name="phone">Phone number</string>
+    <string name="reset">Reset</string>
+    <string name="rules">Rules</string>
+    <string name="save">Save</string>
+    <string name="select_contact_to_send_message">Select contacts, which will receive message</string>
+    <string name="select_contacts_for_dispatch">Select contacts</string>
+    <string name="selected_batterylevel">Battery level: </string>
+    <string name="selected_contacts">Selected contacts: </string>
+    <string name="selected_message">Selected message: </string>
+    <string name="set_English">English</string>
+    <string name="set_OK">ОК</string>
+    <string name="set_Russian">Russian</string>
+    <string name="set_battery_level">Setup battery level</string>
+    <string name="set_language">Language</string>
+    <string name="share">Share</string>
+    <string name="text_for_button_confirm">Confirm</string>
+    <string name="update_contacts">Update contacts</string>
+    <string name="year_fab">2018</string>
+</resources>

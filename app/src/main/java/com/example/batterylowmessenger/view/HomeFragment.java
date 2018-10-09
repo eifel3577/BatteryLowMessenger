@@ -2,6 +2,7 @@ package com.example.batterylowmessenger.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.batterylowmessenger.App;
 import com.example.batterylowmessenger.MainActivity;
 import com.example.batterylowmessenger.OnBackPressed;
 import com.example.batterylowmessenger.databinding.HomeFragmentBinding;
@@ -16,12 +18,20 @@ import com.example.batterylowmessenger.sharedPreferenceStorage.ApplicationShared
 import com.example.batterylowmessenger.viewModels.HomeFragmentViewModel;
 import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 
+import javax.inject.Inject;
+
 public class HomeFragment extends Fragment implements OnBackPressed {
+
+    @Inject
+    Context context;
 
     private HomeFragmentViewModel viewModel;
     private HomeFragmentBinding binding;
     private InteractionViewModel interactionViewModel;
 
+    public HomeFragment() {
+        App.getAppComponent().inject(this);
+    }
 
     public static HomeFragment newInstance(){
         return new HomeFragment();
@@ -39,7 +49,7 @@ public class HomeFragment extends Fragment implements OnBackPressed {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean!=null&&!aBoolean){
-                    if(ApplicationSharedPreference.getStoredMessage(getContext())!=null && ApplicationSharedPreference.getStoredMessage(getContext()).length()>0){
+                    if(ApplicationSharedPreference.getStoredMessage(context)!=null && ApplicationSharedPreference.getStoredMessage(context).length()>0){
                         interactionViewModel.select("openInfoFragment");
                     }
                 }
