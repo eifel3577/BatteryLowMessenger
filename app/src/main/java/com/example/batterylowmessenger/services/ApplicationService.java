@@ -25,7 +25,7 @@ public class ApplicationService extends Service {
     private static final String TAG = "YourService";
     public static final String BATTERY_UPDATE = "battery_update";
     public static final String HANDLE_REBOOT = "first_start";
-    ContactsRepository contactsRepository = new ContactsRepository();
+    ContactsRepository contactsRepository = new ContactsRepository(getApplicationContext());
 
 
 
@@ -83,7 +83,7 @@ public class ApplicationService extends Service {
             int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
             int percent = (level * 100) / scale;
 
-            if(!isCharging) {
+            if(isCharging) {
 
                 if (batteryChargeLevel != null &&
                         batteryChargeLevel.length() > 0) {

@@ -1,10 +1,13 @@
 package com.example.batterylowmessenger.viewModels;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
+import android.support.annotation.NonNull;
 
 import com.example.batterylowmessenger.CheckedContact;
 import com.example.batterylowmessenger.LoadData;
@@ -19,13 +22,13 @@ public class ContactFragmentViewModel extends ViewModel {
     public final ObservableBoolean isCheckedContact = new ObservableBoolean(true);
     public final ObservableBoolean loadContactList = new ObservableBoolean(false);
     public final ObservableList<Contact> items = new ObservableArrayList<>();
-    private final ContactsRepository contactsRepository = new ContactsRepository();
+    private ContactsRepository contactsRepository;
     private MutableLiveData<Boolean> isContactChecked = new MutableLiveData<>();
-
     private boolean fromRemote;
 
-    public ContactFragmentViewModel(boolean id) {
+    public ContactFragmentViewModel(boolean id,@NonNull Application application) {
         fromRemote = id;
+        contactsRepository = new ContactsRepository(application.getApplicationContext());
     }
 
     public MutableLiveData<Boolean> getIsContactChecked() {

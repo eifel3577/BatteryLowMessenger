@@ -15,23 +15,22 @@ import com.example.batterylowmessenger.data.MyDatabase;
 
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
 public class ContactsRepository {
 
-    @Inject
-    Context context;
-
-    @Inject
     Executor executor;
 
     private MyDatabase database;
     private ContactDao contactDao;
+    private Context context;
 
 
-    public ContactsRepository() {
-        App.getComponent().inject(this);
+    public ContactsRepository(Context context) {
+        this.context = context;
+        executor = Executors.newSingleThreadExecutor();
         database = App.getInstance().getDatabase();
         contactDao = database.contactDao();
     }

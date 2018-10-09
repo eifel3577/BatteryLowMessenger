@@ -25,7 +25,7 @@ public class InfoFragmentViewModel extends AndroidViewModel {
 
     public InfoFragmentViewModel(@NonNull Application application) {
         super(application);
-        this.repository = new ContactsRepository();
+        this.repository = new ContactsRepository(this.getApplication());
         this.context = getApplication();
     }
 
