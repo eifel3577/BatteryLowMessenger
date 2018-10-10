@@ -24,6 +24,7 @@ public class ContactFragmentViewModel extends ViewModel {
     @Inject
     ContactsRepository contactsRepository;
 
+    private static final String TAG = "contactFragment";
     public final ObservableBoolean empty = new ObservableBoolean(false);
     public final ObservableBoolean isCheckedContact = new ObservableBoolean(true);
     public final ObservableBoolean loadContactList = new ObservableBoolean(false);
@@ -66,6 +67,9 @@ public class ContactFragmentViewModel extends ViewModel {
             public void onContactsLoaded(List<Contact> contacts) {
 
                 items.clear();
+                for(Contact contact:contacts){
+                    items.add(contact);
+                }
                 items.addAll(contacts);
                 for(Contact contact:contacts){
                     if(contact.isChecked()){

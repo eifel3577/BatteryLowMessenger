@@ -36,6 +36,7 @@ public class ContactFragment extends Fragment implements OnBackPressed {
     @Inject
     Context context;
 
+
     private static final String EDIT_OR_CHANGE_IDENT = "editOrChangeIdent";
 
     private InteractionViewModel interactionViewModel;
@@ -44,7 +45,7 @@ public class ContactFragment extends Fragment implements OnBackPressed {
     private ContactsAdapter adapter;
     private boolean editOrChangeContacts;
     private boolean contactsIsChecked;
-    private boolean handleOnPauseMethod=false;
+
 
     public ContactFragment() {
         App.getAppComponent().inject(this);
@@ -125,27 +126,16 @@ public class ContactFragment extends Fragment implements OnBackPressed {
 
     @Override
     public void onBackPressed() {
-        handleOnPauseMethod= true;
         prepareToStartService();
-        onPause();
+        interactionViewModel.select("openHomeFragment");
     }
 
     public void backToHomeFragment(View view){
-        handleOnPauseMethod = true;
         prepareToStartService();
-        onPause();
+        interactionViewModel.select("openHomeFragment");
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(!handleOnPauseMethod){
-            interactionViewModel.select("openContactList");
-        }
-        if(handleOnPauseMethod){
-            interactionViewModel.select("openHomeFragment");
-        }
-    }
+
 
     public void prepareToStartService(){
 

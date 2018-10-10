@@ -17,14 +17,14 @@
             android:title="@string/edit_contacts" />
 
         <item
-            android:id="@+id/update_contacts"
-            android:icon="@drawable/upgrade_contacts"
-            android:title="@string/update_contacts"/>
-
-        <item
             android:id="@+id/edit_message"
             android:icon="@drawable/change_message_image"
             android:title="@string/edit_messages" />
+
+        <item
+            android:id="@+id/update_contacts"
+            android:icon="@drawable/upgrade_contacts"
+            android:title="@string/update_contacts"/>
 
 
     </group>
