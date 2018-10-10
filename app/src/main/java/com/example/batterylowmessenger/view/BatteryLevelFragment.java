@@ -4,10 +4,13 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -33,7 +36,6 @@ public class BatteryLevelFragment extends Fragment implements OnBackPressed {
     private BatteryLevelFragmentBinding binding;
     private BatteryLevelFragmentViewModel viewModel;
     private boolean contactsIsChecked;
-    private boolean handleOnPauseMethod=false;
 
 
     public BatteryLevelFragment() {
@@ -43,6 +45,7 @@ public class BatteryLevelFragment extends Fragment implements OnBackPressed {
     public static BatteryLevelFragment newInstance(){
         return new BatteryLevelFragment();
     }
+
 
     @Nullable
     @Override
@@ -97,29 +100,15 @@ public class BatteryLevelFragment extends Fragment implements OnBackPressed {
     }
 
     public void backToHomeFragment(View view){
-        handleOnPauseMethod= true;
         prepareToStartService();
-        onPause();
+        interactionViewModel.select("openHomeFragment");
     }
 
     @Override
     public void onBackPressed() {
-        handleOnPauseMethod= true;
         prepareToStartService();
-        onPause();
+        interactionViewModel.select("openHomeFragment");
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(!handleOnPauseMethod){
-            interactionViewModel.select("openBatteryLevelFragment");
-        }
-        if(handleOnPauseMethod){
-            interactionViewModel.select("openHomeFragment");
-        }
-    }
-
 
     public void prepareToStartService(){
         if(contactsIsChecked&&ApplicationSharedPreference.getStoredMessage(context)!=null&&

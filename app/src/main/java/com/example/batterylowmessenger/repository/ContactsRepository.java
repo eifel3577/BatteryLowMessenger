@@ -51,62 +51,63 @@ public class ContactsRepository {
                     }
                 }
 
-                ContentResolver contentResolver = context.getContentResolver();
-                Cursor cursorContentResolver = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+                        ContentResolver contentResolver = context.getContentResolver();
+                    Cursor cursorContentResolver = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
 
-                try {
-                    if (cursorContentResolver.getCount() > 0) {
+                    try {
+                        if (cursorContentResolver.getCount() > 0) {
 
-                        while (cursorContentResolver.moveToNext()) {
-                            final Contact contact = new Contact();
-                            int hasPhoneNumber = Integer.parseInt(cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+                            while (cursorContentResolver.moveToNext()) {
+                                final Contact contact = new Contact();
+                                int hasPhoneNumber = Integer.parseInt(cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
 
-                            if (hasPhoneNumber > 0) {
-                                String id = cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts._ID));
-                                contact.setContactID(id);
+                                if (hasPhoneNumber > 0) {
+                                    String id = cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts._ID));
+                                    contact.setContactID(id);
 
-                                String name = cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                                contact.setContactName(name);
+                                    String name = cursorContentResolver.getString(cursorContentResolver.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                                    contact.setContactName(name);
 
 
-                                Cursor phoneCursor = contentResolver.query(
-                                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                        null,
-                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                        new String[]{id},
-                                        null);
+                                    Cursor phoneCursor = contentResolver.query(
+                                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                            null,
+                                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                            new String[]{id},
+                                            null);
 
-                                if (phoneCursor.moveToNext()) {
-                                    String phone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                    if (phoneCursor.moveToNext()) {
+                                        String phone = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                                    contact.setContactNumber(phone);
-                                }
-
-                                contact.setChecked(false);
-
-                                executor.execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        contactDao.save(contact);
+                                        contact.setContactNumber(phone);
                                     }
-                                });
 
-                                phoneCursor.close();
+                                    contact.setChecked(false);
+
+                                    executor.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            contactDao.save(contact);
+                                        }
+                                    });
+
+                                    phoneCursor.close();
+                                }
                             }
                         }
+                    } finally {
+                        if (cursorContentResolver != null) {
+                            cursorContentResolver.close();
+                            executor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.onContactsLoaded(contactDao.loadAll());
+                                    contactDao.clearTable();
+                                }
+                            });
+                        }
                     }
-                }
-                finally {
-                    if (cursorContentResolver != null) {
-                        cursorContentResolver.close();
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.onContactsLoaded(contactDao.loadAll());
-                            }
-                        });
-                    }
-                }
+
             }
         });
     }

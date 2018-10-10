@@ -23,4 +23,7 @@ public interface ContactDao {
     @Query("SELECT * FROM contact WHERE isChecked = 1")
     LiveData<List<Contact>> getContacts();
 
+    @Query("DELETE FROM contact")
+    void clearTable();
+
 }
