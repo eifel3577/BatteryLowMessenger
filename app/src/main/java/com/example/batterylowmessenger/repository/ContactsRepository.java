@@ -102,6 +102,7 @@ public class ContactsRepository {
                                 @Override
                                 public void run() {
                                     callback.onContactsLoaded(contactDao.loadAll());
+                                    contactDao.clearTable();
                                 }
                             });
                         }
