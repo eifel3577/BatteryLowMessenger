@@ -38,6 +38,9 @@ public class ContactsRepository {
         contactDao = database.contactDao();
     }
 
+    /**метод загружающий список контактов
+     * @param fromDataBase - грузить данные из сети или из базы данных
+     * @param callback - колбэк на ViewModel,куда будет идти результат*/
     public void getContact(final boolean fromDataBase, @NonNull final LoadData.LoadContactCallback callback){
 
         executor.execute(new Runnable() {
@@ -112,6 +115,10 @@ public class ContactsRepository {
         });
     }
 
+    /**метод сохраняющий контакт в базу данных
+     * @param contact - контакт который будет записываться в базу данных
+     * @param checked - отмеченный ли этот контакт
+     * @param contactCallback - колбэк возвращающий флаг есть ли в базе данных отмеченные контакты  */
     public void putValueToDatabase(final Contact contact, final boolean checked,@NonNull final CheckedContact.CheckedContactCallback contactCallback){
         executor.execute(new Runnable() {
             @Override
@@ -123,6 +130,8 @@ public class ContactsRepository {
         });
     }
 
+    /**метод проверяет есть ли в списке контактов,хранящемся в базе данных,отмеченные контакты
+     * @param contactCallback - колбэк куда пойдет булев есть ли отмеченные контакты */
     public void getCheckedList(@NonNull final CheckedContact.CheckedContactCallback contactCallback){
         executor.execute(new Runnable() {
             @Override
@@ -131,6 +140,7 @@ public class ContactsRepository {
             }
         });
     }
+
 
     public void getCheckedContactList(@NonNull final LoadData.LoadContactCallback contactCallback){
         executor.execute(new Runnable() {

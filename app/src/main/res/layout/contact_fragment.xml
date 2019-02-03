@@ -22,6 +22,7 @@
         android:clickable="true"
         android:orientation="vertical">
 
+        <!--втюгруп со списком контактов,показывается только когда loadContactList false,то есть когда загрузка окончена -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,6 +30,7 @@
             android:visibility="@{viewmodel.loadContactList ? View.GONE : View.VISIBLE}"
             android:orientation="vertical">
 
+            <!--список контактов,отображает ObservableList<Contact> items из ViewModel -->
             <ListView
                 android:id="@+id/contacts_list"
                 android:layout_weight="1"
@@ -36,6 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
 
+            <!--кнопка Подтвердить,будет кликабельна только когда ObservableBoolean isCheckedContact
+             будет true.По нажатию будет вызывать метод фрагмента backToHomeFragment-->
             <Button
                 android:id="@+id/button_confirm"
                 android:layout_width="match_parent"
@@ -52,6 +56,7 @@
 
 
 
+        <!--вьюгруп с прогрессбаром, показывается только когда loadContactList true,то есть когда загрузка продолжается -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

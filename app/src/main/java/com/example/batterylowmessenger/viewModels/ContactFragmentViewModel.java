@@ -27,11 +27,18 @@ public class ContactFragmentViewModel extends ViewModel {
     ContactsRepository contactsRepository;
 
     private static final String TAG = "contactFragment";
+
+    /**true если репозиторий вернул пустой список */
     public final ObservableBoolean empty = new ObservableBoolean(false);
+    /**false если в возвращенном от репозитория списке есть хотя бы один отмеченный контакт */
     public final ObservableBoolean isCheckedContact = new ObservableBoolean(true);
+    /**false если загрузка из репозитория окончена,true если загрузка продолжается*/
     public final ObservableBoolean loadContactList = new ObservableBoolean(false);
+    /**список контактов,которые вернул репозитория */
     public final ObservableList<Contact> items = new ObservableArrayList<>();
-    private MutableLiveData<Boolean> isContactChecked = new MutableLiveData<>();
+    /**true если в базе данных есть отмеченные контакты,false если нет */
+    private MutableLiveData<Boolean> isContactCheckedInDatabase = new MutableLiveData<>();
+    /**флаг грузить список контактов из сети или из базы данных */
     private boolean fromRemote;
 
     /**инициализация даггера,установка флага fromRemote */
@@ -41,30 +48,37 @@ public class ContactFragmentViewModel extends ViewModel {
     }
 
     public MutableLiveData<Boolean> getIsContactChecked() {
-        return isContactChecked;
+        return isContactCheckedInDatabase;
     }
 
-    /**при старте ViewModel */
+    /**при старте ViewModel ставит флаг "идет загрузка списка контактов" в true,загружает список
+     * контактов из репозитория*/
     public void start() {
         loadContactList.set(true);
         loadContacts(fromRemote);
         checkContactList();
     }
 
+    /**метод просит репозиторий дать ответ есть ли в базе данных отмеченные контакты */
     public void checkContactList(){
         contactsRepository.getCheckedList(new CheckedContact.CheckedContactCallback() {
             @Override
             public void onContactsLoaded(boolean resultCheck) {
                 if(resultCheck){
-                    isContactChecked.postValue(false);
+                    isContactCheckedInDatabase.postValue(false);
                 }
                 if(!resultCheck){
-                    isContactChecked.postValue(true);
+                    isContactCheckedInDatabase.postValue(true);
                 }
             }
         });
     }
 
+    /**берет на вход флаг,передает его репозиторию и ввзывает на репозитории метод,загружающий
+     * список контактов
+     * @param id - флаг грузить данные из сети или из базы данных
+     * загруженные контакты пишутся в items,если в списке есть отмеченные контакты,то флаг
+     * isCheckedContact ставится в false*/
     private void loadContacts(boolean id){
         contactsRepository.getContact(id, new LoadData.LoadContactCallback() {
             @Override
@@ -92,6 +106,8 @@ public class ContactFragmentViewModel extends ViewModel {
         });
     }
 
+    /**вставляет в базу данных новый контакт,пишет в isCheckedContact есть ли в базе данных отмеченные
+     * контакты */
     public void contactChecked(Contact contact,boolean checked){
 
         contactsRepository.putValueToDatabase(contact, checked, new CheckedContact.CheckedContactCallback() {
