@@ -31,26 +31,35 @@ import javax.inject.Inject;
 
 import static java.security.AccessController.getContext;
 
+/**фрагмент выбора контактов */
 public class ContactFragment extends Fragment implements OnBackPressed {
 
+    /**получение контекста из даггера */
     @Inject
     Context context;
 
 
     private static final String EDIT_OR_CHANGE_IDENT = "editOrChangeIdent";
 
+    /**навигационная ViewModel для работы с навигацией внутри приложения */
     private InteractionViewModel interactionViewModel;
+
+    /**ViewModel для работы фрагмента с репозиторием */
     private ContactFragmentViewModel contactFragmentViewModel;
+    /**биндинг для работы фрагмента с xml */
     private ContactFragmentBinding contactFragmentBinding;
+    /**адаптер для вывода списка контактов */
     private ContactsAdapter adapter;
     private boolean editOrChangeContacts;
     private boolean contactsIsChecked;
 
 
+    /**инициализация даггера */
     public ContactFragment() {
         App.getAppComponent().inject(this);
     }
 
+    /**инициализирует фрагмент с учетом переданного флага value */
     public static ContactFragment newInstance(boolean value){
         Bundle args = new Bundle();
         args.putBoolean(EDIT_OR_CHANGE_IDENT,value);
@@ -59,6 +68,7 @@ public class ContactFragment extends Fragment implements OnBackPressed {
         return contactFragment;
     }
 
+    /**если  */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +77,8 @@ public class ContactFragment extends Fragment implements OnBackPressed {
         }
     }
 
+    /**инициализация биндинга,навигационной ViewModel,ViewModel для работы фрагмента с репозиторием,
+     *  */
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -102,11 +114,13 @@ public class ContactFragment extends Fragment implements OnBackPressed {
         setupListAdapter();
     }
 
+    /**фабрика создает ViewModel для работы фрагмента с репозиторием с учетом флага editOrChangeContact*/
     private ContactFragmentViewModel setupViewModel(){
         return ViewModelProviders.of(this, new ModelFactory(editOrChangeContacts))
                 .get(ContactFragmentViewModel.class);
     }
 
+    /**при каждом начале работі фрагмента стартует работа ViewModel для работы фрагмента с репозиторием */
     @Override
     public void onResume() {
         super.onResume();

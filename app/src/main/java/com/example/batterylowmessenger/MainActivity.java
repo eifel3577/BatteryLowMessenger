@@ -32,39 +32,50 @@ import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 
 import java.util.List;
 
+/**стартовая активность лаунчера, реализует слушатель обработки собітий навигации */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    /** */
+
+    /**тулбар */
     private Toolbar toolbar;
+    /**ViewModel для управления навигацией */
     private InteractionViewModel interactionViewModel;
+    /**база данных */
     MyDatabase database;
+    /**интерфейс доступа к базе данных */
     ContactDao contactDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /**инициализация тулбара */
         toolbar = findViewById(R.id.toolbar);
+        /**тулбар будет использовать свойства экшенбара */
         setSupportActionBar(toolbar);
-
         setDrawerLayout();
+        /**инициализация ViewModel для навигации */
         interactionViewModel = obtainViewModel(this);
         observeInteractionViewModel(interactionViewModel);
-
+        /**при первой загрузке приложения по умолчанию открівается HomeFragment */
         if (savedInstanceState == null) {
             openFragment(HomeFragment.newInstance());
         }
+        /**инициализация базы данных Рум и интерфейса доступа к ней */
         database = App.getInstance().getDatabase();
         contactDao = database.contactDao();
     }
 
 
+    /**обработка нажатия на аппаратную кнопку Назад */
     @Override
     public void onBackPressed() {
         tellFragments();
     }
 
 
+    /**получение списка всех фрагментов.Установка обработчика нажатия аппаратной кнопки Назад для фрагментов */
     private void tellFragments(){
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for(Fragment f : fragments){
@@ -78,11 +89,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**создает фабрику,которая создает навигационную ViewModel и возвращает ее  */
     public static InteractionViewModel obtainViewModel(FragmentActivity activity) {
         InteractionModelFactory factory = InteractionModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(InteractionViewModel.class);
     }
 
+    /**установка меню шторки */
     private void setDrawerLayout(){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -96,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    /**подписка на события, приходящие из навигационной ViewModel */
     private void observeInteractionViewModel(final InteractionViewModel model){
         model.getSelected().observe(this, new Observer<String>() {
             @Override
@@ -104,9 +118,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (message.equals("openHomeFragment")) {
                         openFragment(HomeFragment.newInstance());
                     }
+                    /**открыть фрагмент со списком контактов */
                     if (message.equals("openContactList")) {
                         openFragment(ContactFragment.newInstance(false));
                     }
+                    /**открыть фрагмент для выбора сообщения */
                     if (message.equals("openMessageFragment")) {
                         openFragment(MessageFragment.newInstance());
                     }
@@ -121,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    /**обработка нажатия на элементы меню в шторке */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -162,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    /**открывает фрагмент.Если в контейнере уже есть фрагмент,заменяет его на новый */
     private void openFragment(Fragment fragment){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
@@ -169,24 +187,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ft.addToBackStack(null);
     }
 
+    /**метод для локализации */
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 
-
+    /**метод для локализации */
     private void updateViews(String languageCode) {
         LocaleHelper.setLocale(getApplication(), languageCode);
         updateScreen();
     }
 
+    /**установка меню на тулбаре */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_bar_menu, menu);
         return true;
     }
 
-
+    /**обработка нажатия на элементы меню в тулбаре */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -204,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    /**обновление текущего активити  */
     public void updateScreen(){
         Intent intent= new Intent(MainActivity.this,MainActivity.class);
         finish();

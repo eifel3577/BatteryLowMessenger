@@ -19,8 +19,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**ViewModel для работы фрагмента ContactFragment с репозиторием*/
 public class ContactFragmentViewModel extends ViewModel {
 
+    /**получает зависимость ContactsRepository из даггера */
     @Inject
     ContactsRepository contactsRepository;
 
@@ -32,6 +34,7 @@ public class ContactFragmentViewModel extends ViewModel {
     private MutableLiveData<Boolean> isContactChecked = new MutableLiveData<>();
     private boolean fromRemote;
 
+    /**инициализация даггера,установка флага fromRemote */
     public ContactFragmentViewModel(boolean id) {
         App.getAppComponent().inject(this);
         fromRemote = id;
@@ -41,6 +44,7 @@ public class ContactFragmentViewModel extends ViewModel {
         return isContactChecked;
     }
 
+    /**при старте ViewModel */
     public void start() {
         loadContactList.set(true);
         loadContacts(fromRemote);

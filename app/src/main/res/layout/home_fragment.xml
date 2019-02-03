@@ -2,13 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <!--указание биндингу,что будет идти работа с обьектами view -->
         <import type="android.view.View" />
 
+        <!--ссылка на переменную фрагмента-хоста -->
         <variable
             name="homeFragment"
             type="com.example.batterylowmessenger.view.HomeFragment" />
 
+        <!--ссыдка на ViewModel фрагмента-хоста -->
         <variable
             name="viewmodel"
             type="com.example.batterylowmessenger.viewModels.HomeFragmentViewModel" />
@@ -33,17 +35,19 @@
             android:background="@drawable/linearlayout_bg"
             android:padding="10dp">
 
+            <!--при нажатии будет вызываться метод фрагмента-хоста toContactList -->
             <Button
                 android:id="@+id/btnSelectContacts"
+                style="@style/ButtonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                style="@style/ButtonText"
+                android:layout_margin="10dp"
                 android:background="@drawable/button_gplus_gb"
                 android:onClick="@{homeFragment::toContactList}"
-                android:layout_margin="10dp"
+                android:padding="10dp"
                 android:text="@string/select_contacts_for_dispatch" />
 
+            <!--при нажатии будет вызываться метод фрагмента-хоста toMessage -->
             <Button
                 android:id="@+id/btnSmsText"
                 android:layout_width="match_parent"
