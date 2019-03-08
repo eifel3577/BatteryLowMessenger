@@ -48,17 +48,23 @@ public class HomeFragment extends Fragment implements OnBackPressed {
      * то передача в навигационную ViewModel соответствующего стрингового идента*/
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        //инициализация биндинга
         binding = HomeFragmentBinding.inflate(inflater,container,false);
+        //инициализация ViewModel
         viewModel = setupViewModel();
+        //инициализация навигационной ViewModel
         interactionViewModel = MainActivity.obtainViewModel(getActivity());
+        //привязка биндинга к фрагменту
         binding.setHomeFragment(this);
-
+        //подписывается на булев-трансляцию из viewModel,есть ли отмеченные контакты
         viewModel.getIsContactChecked().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
+                //если трансляция получена и отмеченные контакты есть
                 if(aBoolean!=null&&!aBoolean){
+                    //проверяет есть ли в префах сохраненное сообщение и его длина более 1 символа
                     if(ApplicationSharedPreference.getStoredMessage(context)!=null && ApplicationSharedPreference.getStoredMessage(context).length()>0){
+                        //в навигационную viewModel идет сигнал открыть InfoFragment 
                         interactionViewModel.select("openInfoFragment");
                     }
                 }
@@ -86,7 +92,7 @@ public class HomeFragment extends Fragment implements OnBackPressed {
         interactionViewModel.select("openMessageFragment");
     }
 
-    /**стартует ViewModel при открытии фрагмента */
+    /**запускает метод start() у ViewModel при открытии фрагмента */
     @Override
     public void onResume() {
         super.onResume();
