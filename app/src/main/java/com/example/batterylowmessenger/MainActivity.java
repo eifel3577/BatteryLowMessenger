@@ -77,12 +77,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /**получение списка всех фрагментов.Установка обработчика нажатия аппаратной кнопки Назад для фрагментов */
     private void tellFragments(){
+        //получает список фрагментов
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for(Fragment f : fragments){
+            //для ContactFragment нажатие кнопки Назад будет вызывать метод onBackPressed() этого фрагмента
             if (f != null && f instanceof ContactFragment){
                 ((ContactFragment) f).onBackPressed();
             }
-
+            //для HomeFragment и InfoFragment нажатие кнопки Назад будет вызывать закрытие приложения
             if (f != null && (f instanceof HomeFragment||f instanceof InfoFragment)){
                 finish();
             }
