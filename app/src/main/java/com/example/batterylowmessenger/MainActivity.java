@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /**создает фабрику,которая создает навигационную ViewModel и возвращает ее  */
+    /**создает фабрику,которая создает навигационную ViewModel и возвращает ее.Метод статический,чтобы его могли вызывать из фрагментов  */
     public static InteractionViewModel obtainViewModel(FragmentActivity activity) {
         InteractionModelFactory factory = InteractionModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(InteractionViewModel.class);
