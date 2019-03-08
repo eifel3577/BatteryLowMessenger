@@ -16,6 +16,7 @@ public interface ContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(Contact contact);
 
+    //получает все записи из БД
     @Query("SELECT * FROM contact")
     List<Contact> loadAll();
 
@@ -23,9 +24,11 @@ public interface ContactDao {
     @Query("SELECT * FROM contact WHERE isChecked = 1")
     List<Contact> getCheckedList();
 
+    //получает из БД отмеченные контакты
     @Query("SELECT * FROM contact WHERE isChecked = 1")
     LiveData<List<Contact>> getContacts();
 
+    //очищает БД
     @Query("DELETE FROM contact")
     void clearTable();
 
