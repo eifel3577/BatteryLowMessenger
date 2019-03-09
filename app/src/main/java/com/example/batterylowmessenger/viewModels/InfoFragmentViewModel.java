@@ -42,6 +42,7 @@ public class InfoFragmentViewModel extends ViewModel {
 
     //вызывается когда InfoFragment появляется на экране
     public void start(){
+
         //запрашивает у репозитория список отмеченных контактов
         repository.getCheckedContactList(new LoadData.LoadContactCallback() {
             //
