@@ -168,6 +168,10 @@ public class ContactsRepository {
     }
 
 
+    /**
+     * метод возвращающий из базы список отмеченных контактов
+     * @param contactCallback - колбек куда пойдет список отмеченных контактов
+     */
     public void getCheckedContactList(@NonNull final LoadData.LoadContactCallback contactCallback){
         executor.execute(new Runnable() {
             @Override

@@ -19,25 +19,32 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
+//viewModel для взаимодействия с InfoFragment
 public class InfoFragmentViewModel extends ViewModel {
 
+    //получение контекста и репозитория из даггера
     @Inject
     Context context;
     @Inject
     ContactsRepository repository;
 
-
+    //String-трансляция отмеченных контактов
     public ObservableField<String> checkedContactString = new ObservableField<>();
+    //String-трансляция выбранного сообщения
     public ObservableField<String>messageText = new ObservableField<>();
+    //String-трансляция выбранного уровня батареи
     public ObservableField<String>batteryLevelText = new ObservableField<>();
 
+    //просит даггер предоставить нужные зависимости для данной viewModel
     public InfoFragmentViewModel() {
         App.getAppComponent().inject(this);
     }
 
+    //вызывается когда InfoFragment появляется на экране
     public void start(){
+        //запрашивает у репозитория список отмеченных контактов
         repository.getCheckedContactList(new LoadData.LoadContactCallback() {
+            //
             @Override
             public void onContactsLoaded(List<Contact> tasks) {
                 StringBuilder builder = new StringBuilder();

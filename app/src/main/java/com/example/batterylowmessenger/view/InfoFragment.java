@@ -16,32 +16,48 @@ import com.example.batterylowmessenger.databinding.InfoFragmentBinding;
 import com.example.batterylowmessenger.viewModels.InfoFragmentViewModel;
 import com.example.batterylowmessenger.viewModels.InteractionViewModel;
 
+//фрагмент отображает выбранные контакты, смс и уровень батареи (если не выбран то 5 по умолчанию)
 public class InfoFragment extends Fragment implements OnBackPressed {
 
+    //ссылка на ViewModel
     private InfoFragmentViewModel viewModel;
+    //ссылка на биндинг
     private InfoFragmentBinding binding;
+    //ссылка на навигационную viewModel
     private InteractionViewModel interactionViewModel;
 
-
+    //инициализирует фрагмент
     public static InfoFragment newInstance(){
         return new InfoFragment();
     }
 
+
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //инициализирует ViewModel
         viewModel = setupViewModel();
+        //инициализирует навигационную viewModel
         interactionViewModel = MainActivity.obtainViewModel(getActivity());
+        //инициализирует биндинг
         binding = InfoFragmentBinding.inflate(inflater,container,false);
+        //прикрепляет биндинг к viewModel
         binding.setViewmodel(viewModel);
+        //textView будут скролится
+        setScrollable();
+        return binding.getRoot();
+    }
+
+    private void setScrollable() {
         binding.textViewSelectContacts.setMovementMethod(new ScrollingMovementMethod());
         binding.textViewSelectMessage.setMovementMethod(new ScrollingMovementMethod());
         binding.textViewSelectChargeLevel.setMovementMethod(new ScrollingMovementMethod());
-        return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        //при появлении фрагмента на экране будет выполнятсяметод start() у viewModel
         viewModel.start();
     }
 
