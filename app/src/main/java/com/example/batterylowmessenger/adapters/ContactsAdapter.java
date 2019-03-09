@@ -18,10 +18,11 @@ import com.example.batterylowmessenger.viewModels.ContactFragmentViewModel;
 import java.util.List;
 import java.util.Random;
 
+//адаптер для отображения списка контактов
 public class ContactsAdapter extends BaseAdapter {
-
+    //ссылка на viewModel
     private final ContactFragmentViewModel contactsViewModel;
-
+    //список контактов
     private List<Contact> contacts;
 
     public ContactsAdapter(List<Contact> contacts,
@@ -52,8 +53,6 @@ public class ContactsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, final View view, final ViewGroup viewGroup) {
 
-
-
         ContactItemBinding binding;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -61,7 +60,6 @@ public class ContactsAdapter extends BaseAdapter {
             binding = ContactItemBinding.inflate(inflater, viewGroup, false);
         }
         else {
-
             binding = DataBindingUtil.getBinding(view);
         }
 
@@ -70,15 +68,17 @@ public class ContactsAdapter extends BaseAdapter {
             @Override
             public void onCompleteChanged(Contact contact, View v) {
                 boolean checked = ((CheckBox)v).isChecked();
-
+                //контакт в списке отмечен
                 contactsViewModel.contactChecked(contact,checked);
 
             }
         };
 
+        //создается рандомный цвет
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
+        //большая белая первая буква имени контакта в цветном круге рандомного цвета
         TextDrawable myDrawable = TextDrawable.builder().beginConfig()
                 .textColor(Color.WHITE)
                 .useFont(Typeface.DEFAULT)
@@ -96,7 +96,7 @@ public class ContactsAdapter extends BaseAdapter {
         return binding.getRoot();
     }
 
-
+    //принимает список контактов,обновляет отображение
     private void setList(List<Contact> contacts) {
         this.contacts = contacts;
         notifyDataSetChanged();

@@ -109,7 +109,6 @@ public class ContactFragmentViewModel extends ViewModel {
     /**вставляет в базу данных новый контакт,пишет в isCheckedContact есть ли в базе данных отмеченные
      * контакты */
     public void contactChecked(Contact contact,boolean checked){
-
         contactsRepository.putValueToDatabase(contact, checked, new CheckedContact.CheckedContactCallback() {
             @Override
             public void onContactsLoaded(boolean resultCheck) {
